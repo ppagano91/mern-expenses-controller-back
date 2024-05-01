@@ -64,12 +64,39 @@ const userController = {
 
     }),
     profile: asyncHandler(async (req, res) =>{        
-        const user = await User.findById(req.user)
+        const user = await User.findById(req.verifiedId)
         if(!user){
             throw new Error('User not found!')
         }
 
         res.json({username: user.username, email: user.email})
+    }),
+    changeUserPassword: asyncHandler(async (req, res) => {
+        const {newPassword} = req.body
+
+        const user = await User.findById(req.verifiedId)
+        if(!user){
+            throw new Error('User not found!')
+        }
+
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(newPassword, salt)
+
+        user.password = hashedPassword
+        await user.save()
+
+        res.json({message: 'Password change successfuly!'})
+
+
+    }),
+    updateUserProfile: asyncHandler(async (req, res) => {
+        const {email, username} = req.body
+
+        const updatedUser = await User.findByIdAndUpdate(req.verifiedId,{username, email},{new: true})
+
+        res.json({message: 'User Profile updated successfuly!', user: updatedUser})
+
+
     })
 }
 
