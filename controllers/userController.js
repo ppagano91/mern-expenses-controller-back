@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 const User = require('../model/User')
 
 const userController = {
-    register: asyncHandler(async(req, res) => {
+    register: asyncHandler(async (req, res) => {
         const { username, email, password } = req.body
         
         // Validation data
@@ -35,7 +35,7 @@ const userController = {
                     }
                 })
     }),
-    login: asyncHandler(async(req,res) => {
+    login: asyncHandler(async (req,res) => {
         const {email, password} = req.body
 
         const user = await User.findOne({email})
@@ -62,6 +62,14 @@ const userController = {
             username: user.username
         })
 
+    }),
+    profile: asyncHandler(async (req, res) =>{        
+        const user = await User.findById(req.user)
+        if(!user){
+            throw new Error('User not found!')
+        }
+
+        res.json({username: user.username, email: user.email})
     })
 }
 
