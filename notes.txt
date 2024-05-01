@@ -4,5 +4,5 @@ https://www.youtube.com/watch?v=lWMemPN9t6Q&t=15s
 Mongodb Shell:
 https://www.mongodb.com/docs/mongodb-shell/install/
 
-En Shell como Administrador tener levantado Mongodb Server:
+En Shell como Administrador tener levantado Mongodb Server, comando:
 mongod

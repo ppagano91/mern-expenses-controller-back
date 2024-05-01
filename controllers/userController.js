@@ -78,7 +78,8 @@ const userController = {
         if(!user){
             throw new Error('User not found!')
         }
-
+        
+        // TODO: agregar validación de de password actual antes de cambiar
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(newPassword, salt)
 
@@ -91,7 +92,8 @@ const userController = {
     }),
     updateUserProfile: asyncHandler(async (req, res) => {
         const {email, username} = req.body
-
+        
+        // TODO: se pueden agregar más campos para modificar y verificación de password para grabar los cambios
         const updatedUser = await User.findByIdAndUpdate(req.verifiedId,{username, email},{new: true})
 
         res.json({message: 'User Profile updated successfuly!', user: updatedUser})
