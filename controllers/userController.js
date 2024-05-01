@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 const User = require('../model/User')
 
 const userController = {
@@ -34,6 +35,34 @@ const userController = {
                     }
                 })
     }),
+    login: asyncHandler(async(req,res) => {
+        const {email, password} = req.body
+
+        const user = await User.findOne({email})
+
+        if(!user){
+            throw new Error('Invalid login credentials')
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password)
+
+        if(!isMatch){
+            throw new Error('Invalid login credentials')
+        }
+
+        const token = jwt.sign({id: user._id}, 'vivalavida', {
+            expiresIn: '1d'
+        })
+
+        res.json({
+            message: 'Login Success!',
+            token,
+            id: user._id,
+            email: user.email,
+            username: user.username
+        })
+
+    })
 }
 
 module.exports = userController;
