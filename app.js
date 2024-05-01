@@ -1,8 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose')
 const userRouter = require('./routes/userRoutes')
-const errorHandler = require('./middlewares/errorHandlerMiddleware');
 const categoryRouter = require('./routes/categoryRoutes');
+const transactionRouter = require('./routes/transactionRoutes');
+const errorHandler = require('./middlewares/errorHandlerMiddleware');
 const app = express()
 //desarrolloppagano91
 //bU4kU51OTWnaRG5d
@@ -15,6 +16,7 @@ app.use(express.json())
 
 app.use('/api/v1/users',userRouter)
 app.use('/api/v1/categories',categoryRouter)
+app.use('/api/v1/transactions',transactionRouter)
 app.use(errorHandler)
 
 const PORT = process.env.PORT || 8000;
