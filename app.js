@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose')
 const userRouter = require('./routes/userRoutes')
+const errorHandler = require('./middlewares/errorHandlerMiddleware')
 const app = express()
 //desarrolloppagano91
 //bU4kU51OTWnaRG5d
@@ -10,7 +11,9 @@ mongoose
     .then(() => console.log("DB Connected")).catch((e) => console.log(e))
 
 app.use(express.json())
+
 app.use('/api/v1/users',userRouter)
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server is running in port ${PORT}`))
