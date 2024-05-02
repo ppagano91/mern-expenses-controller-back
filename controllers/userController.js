@@ -64,7 +64,7 @@ const userController = {
 
     }),
     profile: asyncHandler(async (req, res) =>{        
-        const user = await User.findById(req.verifiedId)
+        const user = await User.findById(req.verifiedIdUser)
         if(!user){
             throw new Error('User not found!')
         }
@@ -74,7 +74,7 @@ const userController = {
     changeUserPassword: asyncHandler(async (req, res) => {
         const {newPassword} = req.body
 
-        const user = await User.findById(req.verifiedId)
+        const user = await User.findById(req.verifiedIdUser)
         if(!user){
             throw new Error('User not found!')
         }
@@ -94,7 +94,7 @@ const userController = {
         const {email, username} = req.body
         
         // TODO: se pueden agregar más campos para modificar y verificación de password para grabar los cambios
-        const updatedUser = await User.findByIdAndUpdate(req.verifiedId,{username, email},{new: true})
+        const updatedUser = await User.findByIdAndUpdate(req.verifiedIdUser,{username, email},{new: true})
 
         res.json({message: 'User Profile updated successfuly!', user: updatedUser})
 

@@ -12,7 +12,7 @@ const isAuthenticated = async (req, res, next) => {
     })
 
     if(verifyToken){
-        req.verifiedId = verifyToken.id
+        req.verifiedIdUser = verifyToken.id
         next()
     }
     else{

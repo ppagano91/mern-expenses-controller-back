@@ -4,14 +4,14 @@ const Transaction = require('../model/Transaction')
 const transactionController = {
     create: asyncHandler(async (req, res) => {        
         const {type, category, amount, date, description} = req.body
-        const {verifiedId} = req
+        const {verifiedIdUser} = req
 
         if(!amount || !type || !date){
             throw new Error('Type, amount and Date are required')
         }
 
         const transaction = await Transaction.create({
-            user: verifiedId, type, category, amount, description, date: new Date(date)
+            user: verifiedIdUser, type, category, amount, description, date: new Date(date)
         })
 
         res.status(201).json(transaction)
@@ -20,9 +20,9 @@ const transactionController = {
     }),
     filteredListTransactions: asyncHandler(async (req,res) => {
         const {startDate, endDate, type, category} = req.query
-        const {verifiedId} = req
+        const {verifiedIdUser} = req
         let filters = {
-            user: verifiedId
+            user: verifiedIdUser
         }
         // const transactions = await Transaction.find(filters)
 
@@ -50,10 +50,10 @@ const transactionController = {
         res.status(200).json(transactions)
     }),
     update: asyncHandler(async (req, res) =>{
-        const {verifiedId} = req
+        const {verifiedIdUser} = req
         const transaction = await Transaction.findById(req.params.id)        
 
-        if(transaction && transaction.user.toString() === verifiedId.toString()){
+        if(transaction && transaction.user.toString() === verifiedIdUser.toString()){
             transaction.type = req.body.type || transaction.type;
             transaction.category = req.body.category || transaction.category;
             transaction.amount = req.body.amount || transaction.amount;
@@ -65,10 +65,10 @@ const transactionController = {
         }
     }),
     delete: asyncHandler(async (req, res) => {
-        const {verifiedId} = req
+        const {verifiedIdUser} = req
         const transaction = await Transaction.findById(req.params.id)
 
-        if(transaction && transaction.user.toString() === verifiedId.toString()){
+        if(transaction && transaction.user.toString() === verifiedIdUser.toString()){
             await Transaction.findByIdAndDelete(req.params.id)
             res.json({message:'Transaction removed'})
         }
