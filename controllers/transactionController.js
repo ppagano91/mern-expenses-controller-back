@@ -49,9 +49,30 @@ const transactionController = {
 
         res.status(200).json(transactions)
     }),
-    update: asyncHandler(async (req, res) =>{        
+    update: asyncHandler(async (req, res) =>{
+        const {verifiedId} = req
+        const transaction = await Transaction.findById(req.params.id)        
+
+        if(transaction && transaction.user.toString() === verifiedId.toString()){
+            transaction.type = req.body.type || transaction.type;
+            transaction.category = req.body.category || transaction.category;
+            transaction.amount = req.body.amount || transaction.amount;
+            transaction.date = req.body.date || transaction.date;
+            transaction.description = req.body.description || transaction.description;
+
+            const updatedTranscation = await transaction.save()
+            res.json(updatedTranscation)
+        }
     }),
     delete: asyncHandler(async (req, res) => {
+        const {verifiedId} = req
+        const transaction = await Transaction.findById(req.params.id)
+
+        if(transaction && transaction.user.toString() === verifiedId.toString()){
+            await Transaction.findByIdAndDelete(req.params.id)
+            res.json({message:'Transaction removed'})
+        }
+
     })
 }
 
