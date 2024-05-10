@@ -33,7 +33,7 @@ const transactionController = {
             filters.date = {...filters.date, $lte: new Date(endDate)}
         }
         if(type){
-            filters.date = type
+            filters.type = type
         }
         if(category){
             if(category === 'all'){
