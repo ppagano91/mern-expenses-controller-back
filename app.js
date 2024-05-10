@@ -11,7 +11,10 @@ const app = express()
 //url: mongodb+srv://desarrolloppagano91:bU4kU51OTWnaRG5d@mern-expenses-cluster.3hyaoin.mongodb.net/?retryWrites=true&w=majority&appName=mern-expenses-cluster
 mongoose
     .connect('mongodb://localhost:27017/mern-expenses', {family:4})
-    .then(() => console.log("DB Connected")).catch((e) => console.log(e))
+    .then(() => {
+        console.log("| Database Connected\t\t\t✔ |")
+        console.log("===========================================")
+    }).catch((e) => console.log(e))
 
 // CORS Config
 const corsOptions = {
@@ -32,4 +35,8 @@ app.use('/api/v1/transactions',transactionRouter)
 app.use(errorHandler)
 
 const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => console.log(`Server is running in port ${PORT}`))
+app.listen(PORT, () => {
+    console.log("===========================================")
+    console.log(`| Server is running in port ${PORT}\t✔ |`)
+    console.log("-------------------------------------------")
+})
