@@ -43,6 +43,12 @@ const categoryrController = {
         const categories = await Category.find({user: verifiedIdUser})
         res.status(200).json(categories)
     }),
+    byId: asyncHandler(async (req,res) => {
+        const {id: categoryId} = req.params;
+        // const {verifiedIdUser} = req
+        const category = await Category.findById(categoryId)
+        res.status(200).json(category)
+    }),
     update: asyncHandler(async (req, res) =>{       
         const {id: categoryId} = req.params;
         const {type, name} = req.body;
